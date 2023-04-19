@@ -10,6 +10,7 @@ services:
       DB_NAME: go-schema-exporter
       EXPORT_FILE_PATH: /export
       CRON_SPEC: "* * * * * ?"
+      TZ: Asia/Shanghai
     volumes:
       - ./export:/export
     networks:
