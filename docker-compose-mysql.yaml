@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0.33
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: db-schema-exporter
+      TZ: Asia/Shanghai
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+  db-schema-exporter:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: db-schema-exporter:1.0
+    container_name: db-schema-exporter
+    environment:
+      DB_USER: root
+      DB_PASSWORD: root123
+      DB_HOST: db:3306
+      DB_NAME: db-schema-exporter
+      EXPORT_FILE_PATH: /export
+      CRON_SPEC: "* * * * * ?"
+      TZ: Asia/Shanghai
+    volumes:
+      - ./export:/export
+    depends_on:
+      - db
